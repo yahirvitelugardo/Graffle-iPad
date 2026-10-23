@@ -18,8 +18,8 @@ final class TemplatePreviewRenderer {
         return c
     }()
 
-    static func architectureSample() -> Drawing {
-        var g = ArchitectureGraph(title: "Preview", source: "Sample")
+    static func architectureSample(title: String = "Preview", decorations: Bool = false) -> Drawing {
+        var g = ArchitectureGraph(title: title, source: "Sample")
         g.add(ArchitectureNode(id: "app", name: "App", kind: .app, detail: "iOS app", container: "S"))
         g.add(ArchitectureNode(id: "widget", name: "Widget", kind: .appExtension, detail: "Extension", container: "S"))
         g.add(ArchitectureNode(id: "tests", name: "Tests", kind: .tests, detail: "Unit tests", container: "S"))
@@ -31,11 +31,11 @@ final class TemplatePreviewRenderer {
         g.connect("tests", "core", .dependsOn)
         g.connect("feature", "pkg", .package)
         g.connect("core", "pkg", .package)
-        return ArchitectureDrawing.build(g, decorations: false)
+        return ArchitectureDrawing.build(g, decorations: decorations)
     }
 
-    static func classSample() -> Drawing {
-        var g = ClassGraph(title: "Preview", source: "Sample")
+    static func classSample(title: String = "Preview", decorations: Bool = false) -> Drawing {
+        var g = ClassGraph(title: title, source: "Sample")
         g.types = [
             TypeInfo(name: "Shape", kind: .protocolType, language: .swift, properties: ["~ area: Double"], methods: ["~ draw()"]),
             TypeInfo(name: "Base", kind: .classType, language: .swift, properties: ["~ id: Int"], methods: ["~ reset()"]),
@@ -47,7 +47,7 @@ final class TemplatePreviewRenderer {
             TypeRelation(from: "Circle", to: "Shape", kind: .implements),
             TypeRelation(from: "Canvas", to: "Shape", kind: .association),
         ]
-        return ClassDrawing.build(g, options: ClassOptions(), decorations: false)
+        return ClassDrawing.build(g, options: ClassOptions(), decorations: decorations)
     }
 
     func image(for theme: ThemeDefinition, sample: TemplateSample) async -> UIImage? {

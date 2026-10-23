@@ -22,9 +22,9 @@ struct TemplateEntry: Identifiable, Equatable {
     static let all: [TemplateEntry] = [
         TemplateEntry(kind: .blank, title: "Blank Diagram", subtitle: "An empty canvas to draw on."),
         TemplateEntry(kind: .architecture, title: "Software Architecture Diagram",
-                      subtitle: "Reverse engineer the modules of an Xcode, .NET or Android project in a folder, and what depends on what."),
+                      subtitle: "The modules of an app and what depends on what. Starts with an editable example; to draw your own project use Import → Architecture Diagram from Folder."),
         TemplateEntry(kind: .classes, title: "Classes Diagram",
-                      subtitle: "Reverse engineer the classes, structs, enums and protocols of a project (Swift, C#, Kotlin, Java) with their members and relationships."),
+                      subtitle: "Classes, structs and protocols with their members and relationships. Starts with an editable example; to draw your own project use Import → Class Diagram from Folder."),
         TemplateEntry(kind: .database, title: "Entity-Relationship Diagram",
                       subtitle: "Tables with their fields, joined by crow's-foot relationships. Starts with an editable example; to draw your own database use Import → ER Diagram from a Database (SQLite file or .sql script)."),
     ] + Starter.allCases.filter { $0 != .entityRelationship }.map { TemplateEntry(kind: .starter($0), title: $0.title, subtitle: $0.subtitle) }
@@ -192,8 +192,14 @@ struct TemplatesSheet: View {
             var drawing = Starters.drawing(starter)
             theme.apply(to: &drawing)
             flow.deliver(drawing, name: starter.title)
-        case .architecture: flow.start(.architecture, theme: theme)
-        case .classes: flow.start(.classes, theme: theme)
+        case .architecture:
+            var drawing = TemplatePreviewRenderer.architectureSample(title: "Software Architecture", decorations: true)
+            theme.apply(to: &drawing)
+            flow.deliver(drawing, name: "Software Architecture Diagram")
+        case .classes:
+            var drawing = TemplatePreviewRenderer.classSample(title: "Classes", decorations: true)
+            theme.apply(to: &drawing)
+            flow.deliver(drawing, name: "Classes Diagram")
         case .database:
             var drawing = Starters.drawing(.entityRelationship)
             theme.apply(to: &drawing)
