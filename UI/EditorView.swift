@@ -30,6 +30,7 @@ struct EditorView: View {
     @State private var tab: InspectorTab = .format
     @State private var showTemplates = false
     @State private var showThemes = false
+    @State private var showAbout = false
     @AppStorage("canvas.showGrid") private var showGrid = true
     @AppStorage("canvas.snapToGrid") private var snapToGrid = true
 
@@ -63,11 +64,12 @@ struct EditorView: View {
             InspectorHost(model: model, tab: $tab)
                 .inspectorColumnWidth(min: 300, ideal: 340, max: 420)
         }
-        .toolbar { EditorToolbar(model: model, showInspector: $showInspector, tab: $tab, showTemplates: $showTemplates, showThemes: $showThemes,
+        .toolbar { EditorToolbar(model: model, showInspector: $showInspector, tab: $tab, showTemplates: $showTemplates, showThemes: $showThemes, showAbout: $showAbout,
                                  showGrid: $showGrid, snapToGrid: $snapToGrid) }
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showTemplates) { TemplatesSheet(model: model) }
         .sheet(isPresented: $showThemes) { ThemesSheet(model: model) }
+        .sheet(isPresented: $showAbout) { AboutView() }
         .onAppear {
             model.sink = { drawing in
                 if document.drawing != drawing { document.drawing = drawing }
@@ -114,6 +116,7 @@ struct EditorToolbar: ToolbarContent {
     @Binding var tab: InspectorTab
     @Binding var showTemplates: Bool
     @Binding var showThemes: Bool
+    @Binding var showAbout: Bool
     @Binding var showGrid: Bool
     @Binding var snapToGrid: Bool
 
@@ -137,6 +140,7 @@ struct EditorToolbar: ToolbarContent {
                 Toggle("Fingers Scroll, Pencil Draws", isOn: Binding(get: { model.fingerPans }, set: { model.fingerPans = $0 }))
                 Divider()
                 Button("Templates…", systemImage: "square.grid.2x2") { showTemplates = true }
+                Button("About Graffle", systemImage: "info.circle") { showAbout = true }
                 Button("Themes…", systemImage: "paintpalette") { showThemes = true }
             } label: { Image(systemName: "slider.horizontal.3") }
             Button { showInspector.toggle() } label: { Image(systemName: "sidebar.trailing") }
