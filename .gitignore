@@ -1,0 +1,5 @@
+GraffleiPad.xcodeproj/
+.DS_Store
+build/
+.build/
+DerivedData/
