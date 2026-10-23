@@ -9,7 +9,7 @@ struct AboutView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 14) {
+            ScrollView { VStack(spacing: 14) {
                 Image(systemName: "point.3.connected.trianglepath.dotted")
                     .font(.system(size: 56))
                     .foregroundStyle(Color(Tok.accent))
@@ -22,11 +22,12 @@ struct AboutView: View {
                 Link("Source code on GitHub", destination: URL(string: "https://github.com/yahirvitelugardo/Graffle-iPad")!)
                 Text("Copyright © 2026 EVM. Released under the MIT License.").font(.footnote).foregroundStyle(.secondary)
             }
+            .fixedSize(horizontal: false, vertical: true)
             .padding(28)
-            .frame(maxWidth: 460)
+            .frame(maxWidth: 460) }
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
             .navigationBarTitleDisplayMode(.inline)
         }
-        .presentationDetents([.medium])
+        .presentationDetents([.large])
     }
 }

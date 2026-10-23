@@ -47,7 +47,7 @@ final class EditorModel: ObservableObject {
     }
 
     private func viewChanged() {
-        if pendingFit, canvas.bounds.width > 0 {
+        if pendingFit, canvas.bounds.width > 300, canvas.bounds.height > 300 {
             pendingFit = false
             fitOnOpen()
         }
