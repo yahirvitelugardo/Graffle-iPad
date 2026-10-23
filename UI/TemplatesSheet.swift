@@ -25,9 +25,9 @@ struct TemplateEntry: Identifiable, Equatable {
                       subtitle: "Reverse engineer the modules of an Xcode, .NET or Android project in a folder, and what depends on what."),
         TemplateEntry(kind: .classes, title: "Classes Diagram",
                       subtitle: "Reverse engineer the classes, structs, enums and protocols of a project (Swift, C#, Kotlin, Java) with their members and relationships."),
-        TemplateEntry(kind: .database, title: "ER Diagram from a Database",
-                      subtitle: "Read the tables and foreign keys of a SQLite file or a .sql script and draw them as an entity-relationship diagram."),
-    ] + Starter.allCases.map { TemplateEntry(kind: .starter($0), title: $0.title, subtitle: $0.subtitle) }
+        TemplateEntry(kind: .database, title: "Entity-Relationship Diagram",
+                      subtitle: "Tables with their fields, joined by crow's-foot relationships. Starts with an editable example; to draw your own database use Import → ER Diagram from a Database (SQLite file or .sql script)."),
+    ] + Starter.allCases.filter { $0 != .entityRelationship }.map { TemplateEntry(kind: .starter($0), title: $0.title, subtitle: $0.subtitle) }
 }
 
 /// The New Document wizard: step 1 picks what to start, step 2 picks a theme, then the result opens on the canvas.
@@ -194,7 +194,10 @@ struct TemplatesSheet: View {
             flow.deliver(drawing, name: starter.title)
         case .architecture: flow.start(.architecture, theme: theme)
         case .classes: flow.start(.classes, theme: theme)
-        case .database: flow.start(.database, theme: theme)
+        case .database:
+            var drawing = Starters.drawing(.entityRelationship)
+            theme.apply(to: &drawing)
+            flow.deliver(drawing, name: "Entity-Relationship Diagram")
         }
     }
 }
